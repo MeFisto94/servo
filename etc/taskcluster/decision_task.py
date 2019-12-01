@@ -662,26 +662,27 @@ def linux_wpt_common(total_chunks, layout_2020):
         name_prefix = ""
         build_args = ""
         index_key_suffix = ""
-    release_build_task = (
-        linux_build_task(name_prefix + "Release build, with debug assertions")
-        .with_treeherder("Linux x64", "Release+A")
-        .with_script("""
-            time ./mach rustc -V
-            time ./mach fetch
-            ./mach build --release --with-debug-assertions %s -p servo
-            ./etc/ci/lockfile_changed.sh
-            tar -czf /target.tar.gz \
-                target/release/servo \
-                target/release/build/osmesa-src-*/output \
-                target/release/build/osmesa-src-*/out/lib/gallium
-            sccache --show-stats
-        """ % build_args)
-        .with_artifacts("/target.tar.gz")
-        .find_or_create("build.linux_x64%s_release_w_assertions.%s" % (
-            index_key_suffix,
-            CONFIG.task_id(),
-        ))
-    )
+    release_build_task = "br5IsggaQL-ejb8kB0hZgw"
+#    release_build_task = (
+#        linux_build_task(name_prefix + "Release build, with debug assertions")
+#        .with_treeherder("Linux x64", "Release+A")
+#        .with_script("""
+#            time ./mach rustc -V
+#            time ./mach fetch
+#            ./mach build --release --with-debug-assertions %s -p servo
+#            ./etc/ci/lockfile_changed.sh
+#            tar -czf /target.tar.gz \
+#                target/release/servo \
+#                target/release/build/osmesa-src-*/output \
+#                target/release/build/osmesa-src-*/out/lib/gallium
+#            sccache --show-stats
+#        """ % build_args)
+#        .with_artifacts("/target.tar.gz")
+#        .find_or_create("build.linux_x64%s_release_w_assertions.%s" % (
+#            index_key_suffix,
+#            CONFIG.task_id(),
+#        ))
+#    )
     def linux_run_task(name):
         return linux_task(name).with_dockerfile(dockerfile_path("run")).with_repo_bundle()
     wpt_chunks("Linux x64", linux_run_task, release_build_task, repo_dir="/repo",
