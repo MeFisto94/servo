@@ -563,18 +563,17 @@ class MachCommands(CommandBase):
             else:
                 actual_failures.append(failure["output"])
 
-        def format(outputs, description, file=None):
+        def format(outputs, description, file=sys.stdout):
             print(len(outputs), description + ":\n", file=file)
-            for output in outputs:
-                print(output, file=file)
+            file.write('\n'.join(outputs).encode("utf-8"))
 
         if log_intermittents:
-            with open(log_intermittents, "w") as file:
+            with open(log_intermittents, "wb") as file:
                 format(intermittents, "known-intermittent unexpected results", file)
 
         description = "unexpected results that are NOT known-intermittents"
         if log_filteredsummary:
-            with open(log_filteredsummary, "w") as file:
+            with open(log_filteredsummary, "wb") as file:
                 format(actual_failures, description, file)
 
         if actual_failures:
